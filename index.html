@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 교직원 현장 연수 워밍업 웹앱 : 남이섬 레디 플레이어 One</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter & Black Han Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Jua&family=Noto+Sans+KR:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Chart.js for Visual Stats -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        nami: {
+                            green: '#2E7D32',
+                            lightgreen: '#E8F5E9',
+                            autumn: '#D84315',
+                            gold: '#FBC02D',
+                            brown: '#4E342E',
+                            river: '#0288D1',
+                            bg: '#F9FBF8'
+                        }
+                    },
+                    fontFamily: {
+                        jua: ['Jua', 'sans-serif'],
+                        gowun: ['Gowun Dodum', 'sans-serif'],
+                        sans: ['Noto Sans KR', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f4f7f4;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .font-jua { font-family: 'Jua', sans-serif; }
+        .font-gowun { font-family: 'Gowun Dodum', sans-serif; }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(229, 231, 235, 0.8);
+        }
+        
+        .game-btn {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .game-btn:active {
+            transform: scale(0.96);
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #a5d6a7;
+            border-radius: 10px;
+        }
+
+        .animated-pulse-subtle {
+            animation: pulse-subtle 2s infinite;
+        }
+        @keyframes pulse-subtle {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+    </style>
+</head>
+<body class="text-slate-800 bg-nami-bg min-h-screen flex flex-col justify-between selection:bg-nami-green selection:text-white">
+
+    <!-- TOP HEADER / BRANDING -->
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md shadow-sm border-b border-emerald-100">
+        <div class="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-2 cursor-pointer" onclick="switchTab('home')">
+                <span class="text-2xl">🍁</span>
+                <div>
+                    <h1 class="font-jua text-lg text-emerald-900 leading-tight">남이섬 레디 플레이어 One</h1>
+                    <p class="text-[10px] text-emerald-600 font-medium">2026 교직원 현장 연수 아이스브레이킹</p>
+                </div>
+            </div>
+            <button onclick="toggleScheduleModal()" class="px-2.5 py-1.5 text-xs bg-emerald-50 text-emerald-700 font-semibold rounded-full border border-emerald-200 hover:bg-emerald-100 flex items-center space-x-1">
+                <i class="fa-solid fa-calendar-check"></i>
+                <span>연수 일정표</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER (MOBILE FIRST MATCHING SCREEN) -->
+    <main class="max-w-md mx-auto w-full px-4 py-4 flex-1 flex flex-col justify-center">
+
+        <!-- ================= PAGE: HOME ================= -->
+        <section id="page-home" class="space-y-4">
+            <!-- BANNER CARD -->
+            <div class="bg-gradient-to-br from-emerald-700 via-emerald-600 to-teal-800 rounded-3xl p-6 text-white shadow-xl relative overflow-hidden">
+                <div class="absolute -right-6 -bottom-6 opacity-20 text-8xl pointer-events-none">🍁</div>
+                <div class="inline-block px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-semibold mb-2">
+                    📅 2026.10.12(월) 11:00 ~ 20:00
+                </div>
+                <h2 class="font-jua text-2xl mb-1 leading-snug">즐거운 남이섬 연수,<br>선생님의 선택은?</h2>
+                <p class="text-xs text-emerald-100 mb-4 font-gowun">
+                    소통과 집단지성! AI 중점학교 & 학생선택 교육과정 준비부터 힐링 산책까지 함께하는 연수 프리퀄 게임
+                </p>
+                
+                <div class="flex items-center space-x-2 text-xs bg-black/20 p-2.5 rounded-xl border border-white/10">
+                    <i class="fa-solid fa-location-dot text-amber-300"></i>
+                    <span>가평 명물닭갈비 ➔ 남이섬 ➔ 카페 다담 ➔ 메타세쿼이아길</span>
+                </div>
+            </div>
+
+            <!-- GAME MENU GRID -->
+            <div class="grid grid-cols-2 gap-3">
+                <!-- MENU 1: BALANCE GAME -->
+                <div onclick="startBalanceGame()" class="glass-card p-4 rounded-2xl shadow-sm border border-emerald-100 hover:shadow-md cursor-pointer game-btn flex flex-col justify-between bg-emerald-50/50">
+                    <div>
+                        <div class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center text-lg mb-3 shadow-sm">
+                            <i class="fa-solid fa-scale-balanced"></i>
+                        </div>
+                        <h3 class="font-jua text-base text-slate-800">연수 밸런스 게임</h3>
+                        <p class="text-[11px] text-slate-500 mt-1 leading-tight">버스 안 매너부터 회식/카페 토의 취향 선택!</p>
+                    </div>
+                    <span class="mt-4 inline-flex items-center text-xs font-bold text-emerald-600">
+                        시작하기 <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i>
+                    </span>
+                </div>
+
+                <!-- MENU 2: WORLD CUP -->
+                <div onclick="startWorldCup()" class="glass-card p-4 rounded-2xl shadow-sm border border-amber-100 hover:shadow-md cursor-pointer game-btn flex flex-col justify-between bg-amber-50/50">
+                    <div>
+                        <div class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center text-lg mb-3 shadow-sm">
+                            <i class="fa-solid fa-trophy"></i>
+                        </div>
+                        <h3 class="font-jua text-base text-slate-800">남이섬 이상형 월드컵</h3>
+                        <p class="text-[11px] text-slate-500 mt-1 leading-tight">이번 연수 최고의 기대 순간 8강 토너먼트!</p>
+                    </div>
+                    <span class="mt-4 inline-flex items-center text-xs font-bold text-amber-600">
+                        대진표 작성 <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i>
+                    </span>
+                </div>
+
+                <!-- MENU 3: SURVIVAL QUIZ -->
+                <div onclick="startQuiz()" class="glass-card p-4 rounded-2xl shadow-sm border border-sky-100 hover:shadow-md cursor-pointer game-btn flex flex-col justify-between bg-sky-50/50">
+                    <div>
+                        <div class="w-10 h-10 rounded-xl bg-sky-500 text-white flex items-center justify-center text-lg mb-3 shadow-sm">
+                            <i class="fa-solid fa-lightbulb"></i>
+                        </div>
+                        <h3 class="font-jua text-base text-slate-800">연수 골든벨 퀴즈</h3>
+                        <p class="text-[11px] text-slate-500 mt-1 leading-tight">집결 시간, 예산, AI 사업 등 연수 모의고사!</p>
+                    </div>
+                    <span class="mt-4 inline-flex items-center text-xs font-bold text-sky-600">
+                        도전하기 <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i>
+                    </span>
+                </div>
+
+                <!-- MENU 4: MISSION GENERATOR -->
+                <div onclick="startMission()" class="glass-card p-4 rounded-2xl shadow-sm border border-rose-100 hover:shadow-md cursor-pointer game-btn flex flex-col justify-between bg-rose-50/50">
+                    <div>
+                        <div class="w-10 h-10 rounded-xl bg-rose-500 text-white flex items-center justify-center text-lg mb-3 shadow-sm">
+                            <i class="fa-solid fa-camera"></i>
+                        </div>
+                        <h3 class="font-jua text-base text-slate-800">'가을을 담다' 미션</h3>
+                        <p class="text-[11px] text-slate-500 mt-1 leading-tight">16:10 메타세쿼이아길 산책 조별 포토 미션!</p>
+                    </div>
+                    <span class="mt-4 inline-flex items-center text-xs font-bold text-rose-600">
+                        미션 뽑기 <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i>
+                    </span>
+                </div>
+            </div>
+
+            <!-- LIVE STATS SUMMARY CARD -->
+            <div onclick="switchTab('stats')" class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between cursor-pointer hover:bg-slate-50">
+                <div class="flex items-center space-x-3">
+                    <div class="w-9 h-9 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-chart-pie"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-bold text-slate-800">전 교직원 투표 결과 전광판</h4>
+                        <p class="text-[10px] text-slate-500">선생님들이 가장 선호하는 항목 실시간 모아보기</p>
+                    </div>
+                </div>
+                <i class="fa-solid fa-angle-right text-slate-400 text-sm"></i>
+            </div>
+        </section>
+
+        <!-- ================= PAGE: BALANCE GAME ================= -->
+        <section id="page-balance" class="hidden space-y-4">
+            <!-- TOP BAR -->
+            <div class="flex items-center justify-between">
+                <button onclick="switchTab('home')" class="text-xs text-slate-500 hover:text-slate-800 font-semibold flex items-center">
+                    <i class="fa-solid fa-arrow-left mr-1"></i> 메인으로
+                </button>
+                <span id="balance-progress-text" class="text-xs font-bold text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-full">
+                    질문 1 / 8
+                </span>
+            </div>
+
+            <!-- PROGRESS BAR -->
+            <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                <div id="balance-progress-bar" class="bg-emerald-500 h-full w-1/8 transition-all duration-300"></div>
+            </div>
+
+            <!-- QUESTION CARD -->
+            <div class="glass-card p-5 rounded-3xl shadow-lg border border-emerald-100 text-center space-y-3">
+                <span id="balance-tag" class="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 inline-block">
+                    🚌 이동 & 매너
+                </span>
+                <h3 id="balance-question" class="font-jua text-xl text-slate-800 leading-snug">
+                    질문 영역
+                </h3>
+            </div>
+
+            <!-- CHOICE BUTTONS -->
+            <div class="space-y-3">
+                <!-- OPTION A -->
+                <button id="balance-opt-a" onclick="selectBalanceOption('A')" class="game-btn w-full p-4 bg-white border-2 border-emerald-500 hover:bg-emerald-50 rounded-2xl text-left flex items-start space-x-3 shadow-sm group">
+                    <span class="w-7 h-7 rounded-full bg-emerald-500 text-white font-bold flex items-center justify-center shrink-0 mt-0.5 text-xs">
+                        A
+                    </span>
+                    <div class="flex-1">
+                        <p id="balance-text-a" class="text-sm font-semibold text-slate-800 group-hover:text-emerald-900">
+                            A 옵션 텍스트
+                        </p>
+                        <div id="balance-stat-a" class="hidden mt-2">
+                            <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                                <div id="balance-bar-a" class="bg-emerald-500 h-full w-0 transition-all duration-500"></div>
+                            </div>
+                            <p id="balance-percent-a" class="text-[10px] text-emerald-700 font-bold mt-1 text-right">0% 선택</p>
+                        </div>
+                    </div>
+                </button>
+
+                <!-- OPTION B -->
+                <button id="balance-opt-b" onclick="selectBalanceOption('B')" class="game-btn w-full p-4 bg-white border-2 border-teal-500 hover:bg-teal-50 rounded-2xl text-left flex items-start space-x-3 shadow-sm group">
+                    <span class="w-7 h-7 rounded-full bg-teal-500 text-white font-bold flex items-center justify-center shrink-0 mt-0.5 text-xs">
+                        B
+                    </span>
+                    <div class="flex-1">
+                        <p id="balance-text-b" class="text-sm font-semibold text-slate-800 group-hover:text-teal-900">
+                            B 옵션 텍스트
+                        </p>
+                        <div id="balance-stat-b" class="hidden mt-2">
+                            <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                                <div id="balance-bar-b" class="bg-teal-500 h-full w-0 transition-all duration-500"></div>
+                            </div>
+                            <p id="balance-percent-b" class="text-[10px] text-teal-700 font-bold mt-1 text-right">0% 선택</p>
+                        </div>
+                    </div>
+                </button>
+            </div>
+
+            <!-- RESULT COMMENT & NEXT BUTTON -->
+            <div id="balance-next-box" class="hidden space-y-3 pt-2">
+                <div class="p-3 bg-amber-50 rounded-xl border border-amber-200 text-xs text-amber-900 font-gowun flex items-center space-x-2">
+                    <i class="fa-solid fa-comment-dots text-amber-600 text-base"></i>
+                    <span id="balance-comment">선택에 따른 멘트가 입력됩니다.</span>
+                </div>
+                <button onclick="nextBalanceQuestion()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl shadow-md text-sm flex items-center justify-center space-x-2">
+                    <span>다음 질문으로</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= PAGE: WORLD CUP ================= -->
+        <section id="page-worldcup" class="hidden space-y-4">
+            <div class="flex items-center justify-between">
+                <button onclick="switchTab('home')" class="text-xs text-slate-500 hover:text-slate-800 font-semibold flex items-center">
+                    <i class="fa-solid fa-arrow-left mr-1"></i> 메인으로
+                </button>
+                <span id="worldcup-round-tag" class="text-xs font-bold text-amber-700 bg-amber-100 px-2.5 py-1 rounded-full">
+                    8강 토너먼트 (1/4)
+                </span>
+            </div>
+
+            <div class="text-center">
+                <h3 class="font-jua text-xl text-slate-800">남이섬 연수 최애 순간 월드컵</h3>
+                <p class="text-xs text-slate-500">선생님이 가장 기대하는 최고의 활동을 골라주세요!</p>
+            </div>
+
+            <!-- MATCH VS CONTAINER -->
+            <div class="grid grid-cols-1 gap-3 relative">
+                <!-- VS BADGE -->
+                <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-amber-500 text-white font-jua text-base flex items-center justify-center border-2 border-white shadow-lg">
+                    VS
+                </div>
+
+                <!-- CANDIDATE 1 -->
+                <div id="wc-card-1" onclick="selectWorldCupWinner(0)" class="game-btn bg-gradient-to-br from-amber-500 to-orange-600 text-white p-5 rounded-2xl shadow-md cursor-pointer hover:opacity-95 text-center space-y-2 border-2 border-amber-300">
+                    <span id="wc-icon-1" class="text-4xl block">🍗</span>
+                    <h4 id="wc-title-1" class="font-jua text-lg">가평 명물 닭갈비 맛집 탐방</h4>
+                    <p id="wc-desc-1" class="text-xs text-amber-100 font-gowun">13:00 맛있는 닭갈비와 신나는 수다 다담시간</p>
+                </div>
+
+                <!-- CANDIDATE 2 -->
+                <div id="wc-card-2" onclick="selectWorldCupWinner(1)" class="game-btn bg-gradient-to-br from-emerald-600 to-teal-700 text-white p-5 rounded-2xl shadow-md cursor-pointer hover:opacity-95 text-center space-y-2 border-2 border-emerald-300">
+                    <span id="wc-icon-2" class="text-4xl block">🌲</span>
+                    <h4 id="wc-title-2" class="font-jua text-lg">메타세쿼이아길 인생샷 산책</h4>
+                    <p id="wc-desc-2" class="text-xs text-emerald-100 font-gowun">16:10 가을 자연 속 힐링 & 조별 포토 미션</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PAGE: QUIZ ================= -->
+        <section id="page-quiz" class="hidden space-y-4">
+            <div class="flex items-center justify-between">
+                <button onclick="switchTab('home')" class="text-xs text-slate-500 hover:text-slate-800 font-semibold flex items-center">
+                    <i class="fa-solid fa-arrow-left mr-1"></i> 메인으로
+                </button>
+                <span id="quiz-score-tag" class="text-xs font-bold text-sky-700 bg-sky-100 px-2.5 py-1 rounded-full">
+                    점수: 0점
+                </span>
+            </div>
+
+            <div class="glass-card p-5 rounded-3xl shadow-lg border border-sky-100 text-center space-y-2">
+                <span id="quiz-num" class="text-xs font-bold text-sky-600 bg-sky-50 px-2.5 py-1 rounded-full">Q1 / 5</span>
+                <h3 id="quiz-question" class="font-jua text-lg text-slate-800 leading-snug">
+                    2026학년도 교직원 현장 연수의 서울 학교 출발 시각은 언제일까요?
+                </h3>
+            </div>
+
+            <!-- OPTIONS LIST -->
+            <div id="quiz-options" class="space-y-2">
+                <!-- Rendered dynamically -->
+            </div>
+
+            <!-- EXPLANATION / FEEDBACK -->
+            <div id="quiz-feedback" class="hidden p-3 rounded-2xl text-xs font-gowun space-y-1">
+                <p id="quiz-feedback-title" class="font-bold text-sm"></p>
+                <p id="quiz-feedback-desc" class="text-slate-700"></p>
+                <button onclick="nextQuizQuestion()" class="w-full mt-2 py-2.5 bg-sky-600 text-white font-bold rounded-xl shadow">
+                    다음 문제로 이동
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= PAGE: MISSION GENERATOR ================= -->
+        <section id="page-mission" class="hidden space-y-4 text-center">
+            <div class="flex items-center justify-between text-left">
+                <button onclick="switchTab('home')" class="text-xs text-slate-500 hover:text-slate-800 font-semibold flex items-center">
+                    <i class="fa-solid fa-arrow-left mr-1"></i> 메인으로
+                </button>
+                <span class="text-xs font-bold text-rose-700 bg-rose-100 px-2.5 py-1 rounded-full">
+                    📸 16:10 메타세쿼이아길
+                </span>
+            </div>
+
+            <div class="bg-gradient-to-b from-rose-50 to-orange-50 p-6 rounded-3xl border border-rose-200 shadow-md space-y-4">
+                <div class="text-4xl animate-bounce">🍂</div>
+                <h3 class="font-jua text-2xl text-rose-900">‘가을을 담다’ 조별 미션</h3>
+                <p class="text-xs text-slate-600 font-gowun leading-relaxed">
+                    남이섬 산책로에서 부서/조원들과 함께 촬영할<br>특별 포토 미션 카드를 뽑아보세요!
+                </p>
+
+                <!-- CARD DRAW AREA -->
+                <div id="mission-card-box" class="bg-white p-5 rounded-2xl border-2 border-dashed border-rose-300 min-h-[140px] flex flex-col items-center justify-center space-y-2 shadow-inner">
+                    <i class="fa-solid fa-wand-magic-sparkles text-rose-400 text-3xl"></i>
+                    <p class="text-xs font-bold text-slate-400">아래 버튼을 눌러 미션을 뽑아주세요!</p>
+                </div>
+
+                <button onclick="drawRandomMission()" class="game-btn w-full py-3.5 bg-rose-600 hover:bg-rose-700 text-white font-jua text-lg rounded-2xl shadow-lg flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-dice"></i>
+                    <span>랜덤 미션 뽑기!</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= PAGE: LIVE STATS ================= -->
+        <section id="page-stats" class="hidden space-y-4">
+            <div class="flex items-center justify-between">
+                <button onclick="switchTab('home')" class="text-xs text-slate-500 hover:text-slate-800 font-semibold flex items-center">
+                    <i class="fa-solid fa-arrow-left mr-1"></i> 메인으로
+                </button>
+                <span class="text-xs font-bold text-indigo-700 bg-indigo-100 px-2.5 py-1 rounded-full">
+                    📊 실시간 집계 현황
+                </span>
+            </div>
+
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+                <h3 class="font-jua text-base text-slate-800 flex items-center space-x-2">
+                    <i class="fa-solid fa-bus text-emerald-600"></i>
+                    <span>선생님들의 연수 기대 요소 Top 3</span>
+                </h3>
+                <div class="h-48 relative">
+                    <canvas id="statsChart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-indigo-50 p-4 rounded-2xl border border-indigo-100 space-y-2">
+                <h4 class="font-bold text-xs text-indigo-900 flex items-center space-x-1">
+                    <i class="fa-solid fa-bullhorn text-indigo-600"></i>
+                    <span>연수 성공 키워드</span>
+                </h4>
+                <div class="flex flex-wrap gap-1.5 text-[11px]">
+                    <span class="bg-white px-2.5 py-1 rounded-full text-indigo-700 border border-indigo-200 font-medium">#소통과집단지성</span>
+                    <span class="bg-white px-2.5 py-1 rounded-full text-emerald-700 border border-emerald-200 font-medium">#학생선택교육과정</span>
+                    <span class="bg-white px-2.5 py-1 rounded-full text-amber-700 border border-amber-200 font-medium">#AI중점학교점검</span>
+                    <span class="bg-white px-2.5 py-1 rounded-full text-sky-700 border border-sky-200 font-medium">#가평닭갈비</span>
+                    <span class="bg-white px-2.5 py-1 rounded-full text-rose-700 border border-rose-200 font-medium">#메타세쿼이아길</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- RESULT MODAL FOR WORLD CUP / BALANCE FINISH -->
+        <div id="result-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+            <div class="bg-white rounded-3xl max-w-sm w-full p-6 text-center space-y-4 shadow-2xl animate-scale-up">
+                <div class="text-5xl" id="modal-icon">🏆</div>
+                <h3 id="modal-title" class="font-jua text-2xl text-slate-800">우승 축하합니다!</h3>
+                <div id="modal-body" class="p-4 bg-slate-50 rounded-2xl text-xs text-slate-600 font-gowun leading-relaxed">
+                    내용
+                </div>
+                <div class="flex space-x-2">
+                    <button onclick="shareResult()" class="flex-1 py-3 bg-emerald-600 text-white font-bold rounded-xl text-xs shadow hover:bg-emerald-700 flex items-center justify-center space-x-1">
+                        <i class="fa-solid fa-share-nodes"></i>
+                        <span>결과 공유/복사</span>
+                    </button>
+                    <button onclick="closeModal()" class="py-3 px-4 bg-slate-200 text-slate-700 font-bold rounded-xl text-xs hover:bg-slate-300">
+                        닫기
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCHEDULE OVERLAY MODAL -->
+        <div id="schedule-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+            <div class="bg-white rounded-3xl max-w-md w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden">
+                <div class="p-4 bg-emerald-700 text-white flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-list-check text-emerald-200"></i>
+                        <h3 class="font-jua text-lg">2026 연수 세부 일정표</h3>
+                    </div>
+                    <button onclick="toggleScheduleModal()" class="text-white/80 hover:text-white">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+                
+                <div class="p-4 overflow-y-auto space-y-3 text-xs">
+                    <!-- SUMMARY HIGHLIGHTS -->
+                    <div class="p-3 bg-emerald-50 rounded-xl border border-emerald-200 space-y-1">
+                        <p class="font-bold text-emerald-900">📌 핵심 추진 방침</p>
+                        <p class="text-emerald-800 font-gowun">• 학생 선택 교육과정 & AI 중점학교 추진 전략 점검</p>
+                        <p class="text-emerald-800 font-gowun">• 1학기 학교교육활동 평가 환류 및 2학기 소통 다담</p>
+                        <p class="text-emerald-800 font-gowun">• 예산: 총 6,898,000원 (대절버스 2대 / 전 교직원 약 50명)</p>
+                    </div>
+
+                    <!-- TIMELINE TABLE -->
+                    <div class="space-y-2">
+                        <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200 flex items-start space-x-3">
+                            <span class="font-bold text-emerald-700 shrink-0">11:00</span>
+                            <div>
+                                <p class="font-bold text-slate-800">서울 학교 출발 ➔ 가평</p>
+                                <p class="text-[11px] text-slate-500">대절버스 2대 + 자차(10명) / 인원 점검 및 안전교육</p>
+                            </div>
+                        </div>
+
+                        <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200 flex items-start space-x-3">
+                            <span class="font-bold text-emerald-700 shrink-0">13:00</span>
+                            <div>
+                                <p class="font-bold text-slate-800">중식 (가평 명물닭갈비)</p>
+                                <p class="text-[11px] text-slate-500">교직원 단체 점심 식사 & 전 교직원 협의회</p>
+                            </div>
+                        </div>
+
+                        <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200 flex items-start space-x-3">
+                            <span class="font-bold text-emerald-700 shrink-0">14:00</span>
+                            <div>
+                                <p class="font-bold text-slate-800">가평 선착장 승선 ➔ 남이섬 입도</p>
+                                <p class="text-[11px] text-slate-500">14:30 하선 후 단체 기념 촬영</p>
+                            </div>
+                        </div>
+
+                        <div class="p-2.5 bg-emerald-50/70 rounded-xl border border-emerald-200 flex items-start space-x-3">
+                            <span class="font-bold text-emerald-700 shrink-0">14:40</span>
+                            <div>
+                                <p class="font-bold text-emerald-900">스토리투어버스 견학 (30분)</p>
+                                <p class="text-[11px] text-emerald-700">남이섬 전체 생태·문화 탐방</p>
+                            </div>
+                        </div>
+
+                        <div class="p-2.5 bg-emerald-50/70 rounded-xl border border-emerald-200 flex items-start space-x-3">
+                            <span class="font-bold text-emerald-700 shrink-0">15:10</span>
+                            <div>
+                                <p class="font-bold text-emerald-900">부서별 협의회 (섬 내 카페)</p>
+                                <p class="text-[11px] text-emerald-700">2학기 실무 난점 해소, AI 중점학교 & 교육과정 다담</p>
+                            </div>
+                        </div>
+
+                        <div class="p-2.5 bg-rose-50/70 rounded-xl border border-rose-200 flex items-start space-x-3">
+                            <span class="font-bold text-rose-700 shrink-0">16:10</span>
+                            <div>
+                                <p class="font-bold text-rose-900">자율활동 & 산책 (메타세쿼이아길)</p>
+                                <p class="text-[11px] text-rose-700">'가을을 담다' 미션 사진 촬영 및 정서 재충전</p>
+                            </div>
+                        </div>
+
+                        <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200 flex items-start space-x-3">
+                            <span class="font-bold text-emerald-700 shrink-0">16:40</span>
+                            <div>
+                                <p class="font-bold text-slate-800">석식 (섬 내 식당)</p>
+                                <p class="text-[11px] text-slate-500">종합 소감 공유 ➔ 17:40 승선 출도</p>
+                            </div>
+                        </div>
+
+                        <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200 flex items-start space-x-3">
+                            <span class="font-bold text-emerald-700 shrink-0">18:00</span>
+                            <div>
+                                <p class="font-bold text-slate-800">가평 출발 ➔ 학교 복귀 (20:00 해산)</p>
+                                <p class="text-[11px] text-slate-500">안전 운행 및 최종 인원 점검 후 해산</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-3 bg-slate-100 text-center">
+                    <button onclick="toggleScheduleModal()" class="px-6 py-2 bg-slate-800 text-white font-bold rounded-xl text-xs">
+                        닫기
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="max-w-md mx-auto w-full py-4 text-center text-[11px] text-slate-400 font-gowun border-t border-slate-200/60 mt-4">
+        <p>2026학년도 교직원 현장 연수 기획팀 제작 🌿</p>
+        <p class="text-[10px] text-slate-400 mt-0.5">안전하고 뜻깊은 남이섬 연수가 되기를 응원합니다!</p>
+    </footer>
+
+    <script>
+        // Simple Web Audio Sound Effects Synthesizer (No external asset files needed)
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            const now = audioCtx.currentTime;
+
+            if (type === 'click') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(600, now);
+                osc.frequency.exponentialRampToValueAtTime(800, now + 0.05);
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+                osc.start(now);
+                osc.stop(now + 0.05);
+            } else if (type === 'win') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(400, now);
+                osc.frequency.setValueAtTime(600, now + 0.1);
+                osc.frequency.setValueAtTime(800, now + 0.2);
+                gain.gain.setValueAtTime(0.2, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+                osc.start(now);
+                osc.stop(now + 0.4);
+            } else if (type === 'wrong') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(250, now);
+                osc.frequency.setValueAtTime(180, now + 0.1);
+                gain.gain.setValueAtTime(0.2, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+                osc.start(now);
+                osc.stop(now + 0.25);
+            }
+        }
+
+        const BALANCE_QUESTIONS = [
+            {
+                tag: "🚌 이동 & 탑승 매너",
+                question: "11:00 대절 버스 안에서 나의 모습은?",
+                a: "안전벨트 착용 후, 2학기 AI 중점학교 추진 계획서 정독하기",
+                b: "기사님께 마음속으로 '가평 휴게소 간식 꼭 사주세요' 기도하기",
+                percentA: 38,
+                percentB: 62,
+                comment: "휴게소 소떡소떡은 연수의 원동력이죠! 🥨"
+            },
+            {
+                tag: "🍗 13:00 중식 (가평 닭갈비)",
+                question: "닭갈비 식사 테이블에서 나의 특기는?",
+                a: "선배님 접시에 닭갈비 끊이지 않게 올려주는 프로 챙김러",
+                b: "말없이 마지막 볶음밥 하트 모양으로 다듬는 볶음밥 아티스트",
+                percentA: 45,
+                percentB: 55,
+                comment: "하트 볶음밥으로 교직원 단합 완료! ❤️"
+            },
+            {
+                tag: "🛳️ 14:00 선착장 입도",
+                question: "남이섬 들어가는 배 위에서 나의 선택은?",
+                a: "북한강 가을 바람 맞으며 갈매기와 셀카 타임 📸",
+                b: "혹시 바람에 문서 날아갈라 부서 소지품 점검하는 안전요원 🛡️",
+                percentA: 71,
+                percentB: 29,
+                comment: "남는 건 사진뿐! 가을 남이섬 배경은 못 참죠 🍂"
+            },
+            {
+                tag: "🚌 14:40 관람 버스",
+                question: "30분간 남이섬 스토리투어버스 탑승 시 선호 자리는?",
+                a: "해설사님 말씀 다 적을 준비 된 맨 앞자리 공부벌레 📝",
+                b: "바람 잘 통하고 풍경 잘 보이는 맨 뒷자리 힐링파 🍃",
+                percentA: 24,
+                percentB: 76,
+                comment: "시원한 바람 맞으며 힐링하는 것도 연수의 핵심 목적! ✨"
+            },
+            {
+                tag: "☕ 15:10 부서별 카페 협의회",
+                question: "섬 내 카페 다담 음료 선택 스타일은?",
+                a: "머리를 맑게 해주는 진한 따뜻한 아메리카노 ☕",
+                b: "업무 스트레스 싹 날리는 초고당도 망고 스무디 🥭",
+                percentA: 52,
+                percentB: 48,
+                comment: "달콤한 음료와 함께라면 2학기 난점도 싹 해결! 💡"
+            },
+            {
+                tag: "💡 교육과정 & AI 토론",
+                question: "학생 선택 교육과정 & AI 중점학교 아이디어 회의할 때 나는?",
+                a: "획기적인 혁신 아이디어 폭풍 제시하는 아이디어 파이어니어 🚀",
+                b: "현실적 실행 가능성과 교사 업무 부담을 세심하게 조율하는 밸런서 ⚖️",
+                percentA: 41,
+                percentB: 59,
+                comment: "혁신과 안정의 조화가 우리 학교 집단지성의 핵심입니다!"
+            },
+            {
+                tag: "🍁 16:10 메타세쿼이아길 자율산책",
+                question: "30분간 자율 산책 시간에 누구와 걸을까?",
+                a: "교장/교감선생님과 함께 걸으며 학교 비전 담소 나누기 🏛️",
+                b: "친한 교과/부서 선생님과 모여 인생샷 100장 찍기 🤳",
+                percentA: 33,
+                percentB: 67,
+                comment: "어느 쪽이든 가을 단풍 아래면 최고의 힐링이죠! 🍁"
+            },
+            {
+                tag: "🚌 18:00 복귀 버스 안",
+                question: "서울 학교로 돌아가는 2시간 버스 안에서 나는?",
+                a: "오늘 협의된 2학기 교육활동 아이디어 메모장에 정리하기 📱",
+                b: "은은한 클래식 들으며 꿀잠으로 정서 에너지 충전하기 😴",
+                percentA: 19,
+                percentB: 81,
+                comment: "충분한 휴식이 곧 활기찬 2학기 수업의 에너지입니다! 🔋"
+            }
+        ];
+
+        let currentBalanceIdx = 0;
+
+        function startBalanceGame() {
+            playSound('click');
+            currentBalanceIdx = 0;
+            switchTab('balance');
+            renderBalanceQuestion();
+        }
+
+        function renderBalanceQuestion() {
+            const q = BALANCE_QUESTIONS[currentBalanceIdx];
+            document.getElementById('balance-progress-text').innerText = `질문 ${currentBalanceIdx + 1} / ${BALANCE_QUESTIONS.length}`;
+            document.getElementById('balance-progress-bar').style.width = `${((currentBalanceIdx + 1) / BALANCE_QUESTIONS.length) * 100}%`;
+            
+            document.getElementById('balance-tag').innerText = q.tag;
+            document.getElementById('balance-question').innerText = q.question;
+            document.getElementById('balance-text-a').innerText = q.a;
+            document.getElementById('balance-text-b').innerText = q.b;
+
+            // Reset UI
+            document.getElementById('balance-stat-a').classList.add('hidden');
+            document.getElementById('balance-stat-b').classList.add('hidden');
+            document.getElementById('balance-next-box').classList.add('hidden');
+            document.getElementById('balance-opt-a').disabled = false;
+            document.getElementById('balance-opt-b').disabled = false;
+        }
+
+        function selectBalanceOption(choice) {
+            playSound('click');
+            const q = BALANCE_QUESTIONS[currentBalanceIdx];
+            
+            // Show statistics
+            document.getElementById('balance-stat-a').classList.remove('hidden');
+            document.getElementById('balance-stat-b').classList.remove('hidden');
+            
+            document.getElementById('balance-bar-a').style.width = `${q.percentA}%`;
+            document.getElementById('balance-percent-a').innerText = `${q.percentA}% 선생님들의 선택`;
+            
+            document.getElementById('balance-bar-b').style.width = `${q.percentB}%`;
+            document.getElementById('balance-percent-b').innerText = `${q.percentB}% 선생님들의 선택`;
+
+            document.getElementById('balance-comment').innerText = q.comment;
+            document.getElementById('balance-next-box').classList.remove('hidden');
+
+            document.getElementById('balance-opt-a').disabled = true;
+            document.getElementById('balance-opt-b').disabled = true;
+        }
+
+        function nextBalanceQuestion() {
+            playSound('click');
+            currentBalanceIdx++;
+            if (currentBalanceIdx >= BALANCE_QUESTIONS.length) {
+                showModal("⚖️ 밸런스 게임 완료!", "선생님의 솔직하고 유쾌한 선택 덕분에 연수 분위기가 한층 더 따뜻해졌습니다! 실시간 투표 전광판에서 동료 교사들의 전체 결과를 확인해보세요.", "🎉");
+                confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } });
+                switchTab('home');
+            } else {
+                renderBalanceQuestion();
+            }
+        }
+
+        const WORLDCUP_CANDIDATES = [
+            { title: "가평 명물 닭갈비 & 수다", desc: "13:00 정서적 담소와 맛있는 단체 중식", icon: "🍗" },
+            { title: "북한강 가을바람 승선 체험", desc: "14:00 탁 트인 강물 보며 정서 재충전", icon: "🛳️" },
+            { title: "남이섬 스토리투어버스", desc: "14:40 편안하게 즐기는 생태·문화 탐방", icon: "🚌" },
+            { title: "카페 부서별 다담(茶談)", desc: "15:10 AI중점학교 & 교육과정 수평적 토의", icon: "☕" },
+            { title: "메타세쿼이아길 인생샷", desc: "16:10 가을 자연 속 조별 포토 미션", icon: "🌲" },
+            { title: "2학기 업무 꿀팁 & 집단지성", desc: "실무 난점 타개 및 수평적 의견 수렴", icon: "💡" },
+            { title: "휴게소 간식 & 자율 휴식", desc: "소소하지만 확실한 연수의 소소한 행복", icon: "🥨" },
+            { title: "남이섬 섬 내 맛있는 석식", desc: "16:40 종합 소감 공유하며 다 함께 한 끼", icon: "🍱" }
+        ];
+
+        let wcBracket = [];
+        let wcNextRound = [];
+        let wcMatchIdx = 0;
+
+        function startWorldCup() {
+            playSound('click');
+            // Shuffle
+            wcBracket = [...WORLDCUP_CANDIDATES].sort(() => Math.random() - 0.5);
+            wcNextRound = [];
+            wcMatchIdx = 0;
+            switchTab('worldcup');
+            renderWorldCupMatch();
+        }
+
+        function renderWorldCupMatch() {
+            const roundText = wcBracket.length === 8 ? "8강" : wcBracket.length === 4 ? "준결승(4강)" : "결승전";
+            document.getElementById('worldcup-round-tag').innerText = `${roundText} (${wcMatchIdx + 1}/${wcBracket.length / 2})`;
+
+            const c1 = wcBracket[wcMatchIdx * 2];
+            const c2 = wcBracket[wcMatchIdx * 2 + 1];
+
+            document.getElementById('wc-icon-1').innerText = c1.icon;
+            document.getElementById('wc-title-1').innerText = c1.title;
+            document.getElementById('wc-desc-1').innerText = c1.desc;
+
+            document.getElementById('wc-icon-2').innerText = c2.icon;
+            document.getElementById('wc-title-2').innerText = c2.title;
+            document.getElementById('wc-desc-2').innerText = c2.desc;
+        }
+
+        function selectWorldCupWinner(candidateIdx) {
+            playSound('click');
+            const winner = wcBracket[wcMatchIdx * 2 + candidateIdx];
+            wcNextRound.push(winner);
+
+            wcMatchIdx++;
+            if (wcMatchIdx >= wcBracket.length / 2) {
+                // Round ended
+                if (wcNextRound.length === 1) {
+                    // FINAL WINNER!
+                    const finalWinner = wcNextRound[0];
+                    playSound('win');
+                    confetti({ particleCount: 120, spread: 70, origin: { y: 0.6 } });
+                    showModal(`🏆 최종 우승: ${finalWinner.title}`, `선생님이 꼽으신 이번 2026 연수 최고의 기대 요소는 [${finalWinner.title}]입니다!\n\n"${finalWinner.desc}"`, finalWinner.icon);
+                    switchTab('home');
+                } else {
+                    wcBracket = [...wcNextRound];
+                    wcNextRound = [];
+                    wcMatchIdx = 0;
+                    renderWorldCupMatch();
+                }
+            } else {
+                renderWorldCupMatch();
+            }
+        }
+
+        const QUIZ_DATA = [
+            {
+                q: "2026학년도 교직원 현장 연수의 출발 시각과 장소는 어디일까요?",
+                options: ["10:00 가평 선착장", "11:00 서울 학교 출발", "12:00 남이섬 입구", "13:00 명물닭갈비"],
+                answer: 1,
+                desc: "11:00에 학교에서 대절 버스 2대 및 자차(10명)로 출발합니다!"
+            },
+            {
+                q: "이번 연수의 주요 추진 목적으로 올바르지 않은 것은?",
+                options: ["학생 선택 교육과정 편성 역량 강화", "AI 중점학교 운영 단계별 전략 정비", "교직원 간 수평적 소통 및 팀워크 강화", "주말 야간 비상 근무 체제 가동"],
+                answer: 3,
+                desc: "이번 연수는 교직원 사기 진작과 2학기 교육 활동을 위한 힐링 & 소통 연수입니다."
+            },
+            {
+                q: "남이섬 내부에서 30분간 탑승하여 생태·문화를 탐방하는 이동 수단은?",
+                options: ["해저 잠수함", "스토리투어버스", "케이블카", "오리배"],
+                answer: 1,
+                desc: "14:40에 남이섬 전체 개요 파악을 위한 '스토리투어버스'에 다 함께 탑승합니다."
+            },
+            {
+                q: "15:10 부서별 협의회 다담(茶談)이 진행되는 운치 있는 장소는?",
+                options: ["버스 내부", "가평 선착장", "섬 내 카페", "학교 회의실"],
+                answer: 2,
+                desc: "편안한 섬 내 카페 공간에서 수평적이고 자율적인 분위기 속 토의가 이루어집니다."
+            },
+            {
+                q: "2026 교직원 현장 연수의 예산 총 예상액은 얼마일까요?",
+                options: ["3,500,000원", "5,000,000원", "6,898,000원", "10,000,000원"],
+                answer: 2,
+                desc: "총 예상액은 6,898,000원이며, 버스 임차, 중식, 승선료, 다과 등이 포함되어 있습니다."
+            }
+        ];
+
+        let quizIdx = 0;
+        let quizScore = 0;
+
+        function startQuiz() {
+            playSound('click');
+            quizIdx = 0;
+            quizScore = 0;
+            switchTab('quiz');
+            renderQuiz();
+        }
+
+        function renderQuiz() {
+            const q = QUIZ_DATA[quizIdx];
+            document.getElementById('quiz-num').innerText = `Q${quizIdx + 1} / ${QUIZ_DATA.length}`;
+            document.getElementById('quiz-score-tag').innerText = `점수: ${quizScore}점`;
+            document.getElementById('quiz-question').innerText = q.q;
+
+            const optsBox = document.getElementById('quiz-options');
+            optsBox.innerHTML = '';
+
+            q.options.forEach((optText, i) => {
+                const btn = document.createElement('button');
+                btn.className = "game-btn w-full p-3.5 bg-white border border-slate-200 hover:border-sky-400 rounded-2xl text-left text-xs font-semibold text-slate-800 flex items-center space-x-2 shadow-sm";
+                btn.onclick = () => checkQuizAnswer(i);
+                btn.innerHTML = `
+                    <span class="w-6 h-6 rounded-full bg-slate-100 text-slate-600 font-bold flex items-center justify-center shrink-0 text-[11px]">${i + 1}</span>
+                    <span>${optText}</span>
+                `;
+                optsBox.appendChild(btn);
+            });
+
+            document.getElementById('quiz-feedback').classList.add('hidden');
+        }
+
+        function checkQuizAnswer(selectedIdx) {
+            const q = QUIZ_DATA[quizIdx];
+            const feedbackBox = document.getElementById('quiz-feedback');
+            const titleEl = document.getElementById('quiz-feedback-title');
+            const descEl = document.getElementById('quiz-feedback-desc');
+
+            feedbackBox.classList.remove('hidden');
+
+            if (selectedIdx === q.answer) {
+                playSound('win');
+                quizScore += 20;
+                feedbackBox.className = "p-3 rounded-2xl text-xs font-gowun space-y-1 bg-emerald-50 border border-emerald-200 text-emerald-900";
+                titleEl.innerText = "⭕ 정답입니다! (+20점)";
+            } else {
+                playSound('wrong');
+                feedbackBox.className = "p-3 rounded-2xl text-xs font-gowun space-y-1 bg-rose-50 border border-rose-200 text-rose-900";
+                titleEl.innerText = `❌ 아쉽네요! 정답은 [${q.options[q.answer]}] 입니다.`;
+            }
+
+            descEl.innerText = q.desc;
+            document.getElementById('quiz-score-tag').innerText = `점수: ${quizScore}점`;
+
+            // Disable buttons
+            const btns = document.getElementById('quiz-options').querySelectorAll('button');
+            btns.forEach(b => b.disabled = true);
+        }
+
+        function nextQuizQuestion() {
+            playSound('click');
+            quizIdx++;
+            if (quizIdx >= QUIZ_DATA.length) {
+                playSound('win');
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+                showModal("🔔 퀴즈 완주!", `총 점수: ${quizScore}점 / 100점!\n\n연수 일정과 목적을 완벽히 숙지하셨습니다. 10월 12일 연수날 뵙겠습니다!`, quizScore >= 80 ? "💯" : "👍");
+                switchTab('home');
+            } else {
+                renderQuiz();
+            }
+        }
+
+        const MISSIONS = [
+            { icon: "🤖", title: "AI 로봇 단체 포즈", desc: "메타세쿼이아길에서 조원 전원이 AI 로봇 동작을 취하고 단체 사진 찍기!" },
+            { icon: "🍂", title: "가을 단풍 하트", desc: "서로 다른 색깔의 낙엽 3장을 모아 하트를 만든 후 함께 인증샷!" },
+            { icon: "👑", title: "부서장 몰아주기", desc: "부서장/연수 리더가 가장 환하게 웃도록 조원들이 화려하게 받쳐주는 포즈!" },
+            { icon: "🐰", title: "남이섬 생태 친구와 함께", desc: "남이섬 내 동물(토끼, 청설모, 타조 등) 또는 캐릭터 동상과 배경 셀카!" },
+            { icon: "🚀", title: "2학기 파이팅 점프샷", desc: "메타세쿼이아길을 배경으로 2학기 대박을 기원하는 동시 점프샷 성공하기!" },
+            { icon: "☕", title: "감성 카페 화보샷", desc: "섬 내 카페에서 음료를 들고 잡지 표지 같은 시선 처리 샷 연출하기!" }
+        ];
+
+        function startMission() {
+            playSound('click');
+            switchTab('mission');
+        }
+
+        function drawRandomMission() {
+            playSound('click');
+            const box = document.getElementById('mission-card-box');
+            
+            box.classList.add('animate-pulse');
+            setTimeout(() => {
+                box.classList.remove('animate-pulse');
+                const m = MISSIONS[Math.floor(Math.random() * MISSIONS.length)];
+                playSound('win');
+                confetti({ particleCount: 50, spread: 50, origin: { y: 0.6 } });
+
+                box.innerHTML = `
+                    <span class="text-4xl mb-1">${m.icon}</span>
+                    <h4 class="font-jua text-lg text-rose-900">${m.title}</h4>
+                    <p class="text-xs text-slate-700 font-gowun px-2 leading-relaxed">${m.desc}</p>
+                `;
+            }, 300);
+        }
+
+        let statsChart = null;
+
+        function initStatsChart() {
+            const ctx = document.getElementById('statsChart').getContext('2d');
+            if (statsChart) statsChart.destroy();
+
+            statsChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['가평 닭갈비', '메타세쿼이아길', '스토리투어버스', '카페 부서 다담', '복귀 꿀잠'],
+                    datasets: [{
+                        label: '선생님 선호도 (%)',
+                        data: [42, 28, 15, 10, 5],
+                        backgroundColor: [
+                            '#f59e0b',
+                            '#10b981',
+                            '#06b6d4',
+                            '#8b5cf6',
+                            '#64748b'
+                        ],
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, max: 50 }
+                    }
+                }
+            });
+        }
+
+        function switchTab(tabId) {
+            playSound('click');
+            const pages = ['home', 'balance', 'worldcup', 'quiz', 'mission', 'stats'];
+            pages.forEach(p => {
+                const el = document.getElementById(`page-${p}`);
+                if (p === tabId) {
+                    el.classList.remove('hidden');
+                } else {
+                    el.classList.add('hidden');
+                }
+            });
+
+            if (tabId === 'stats') {
+                setTimeout(initStatsChart, 100);
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleScheduleModal() {
+            playSound('click');
+            const modal = document.getElementById('schedule-modal');
+            modal.classList.toggle('hidden');
+        }
+
+        function showModal(title, bodyText, icon) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-body').innerText = bodyText;
+            document.getElementById('modal-icon').innerText = icon || "🎉";
+            document.getElementById('result-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            playSound('click');
+            document.getElementById('result-modal').classList.add('hidden');
+        }
+
+        function shareResult() {
+            playSound('click');
+            const textToCopy = `[2026 교직원 현장 연수 남이섬 게임]\n10월 12일(월) 남이섬 연수를 준비하며 함께 참여했습니다! 🌿\n출발 시각: 11:00 학교 출발`;
+            
+            // execCommand copy implementation for iframe safety
+            const tempInput = document.createElement('textarea');
+            tempInput.value = textToCopy;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            try {
+                document.execCommand('copy');
+                alert('연수 결과 메시지가 클립보드에 복사되었습니다! 카카오톡 단톡방에 공유해보세요.');
+            } catch (err) {
+                alert('복사 중 오류가 발생했습니다.');
+            }
+            document.body.removeChild(tempInput);
+        }
+
+        window.onload = function() {
+            // App initialized
+        };
+    </script>
+</body>
+</html>
